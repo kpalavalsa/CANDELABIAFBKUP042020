@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "ClientId": "TestClientId"
+  },
+  "ConnectionStrings": {
+    "SqlConnectionString": "server=jongdb;user=jong;"
+  }
+}
