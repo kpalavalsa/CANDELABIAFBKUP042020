@@ -190,3 +190,5 @@ D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\bin\Release\net461\bin\ru
 D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\obj\Release\net461\CANDELABIAF.csproj.CopyComplete
 D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\obj\Release\net461\CANDELABIAF.dll
 D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\obj\Release\net461\CANDELABIAF.pdb
+D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\bin\Release\net461\bin\Microsoft.AnalysisServices.Core.DLL
+D:\Projects\Candela\SourceCode\CANDELABIAF\CANDELABIAF\bin\Release\net461\bin\Microsoft.AnalysisServices.Tabular.DLL

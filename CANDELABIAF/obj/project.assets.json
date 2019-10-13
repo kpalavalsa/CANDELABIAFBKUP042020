@@ -2,6 +2,17 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
+      "Microsoft.AnalysisServices.Tabular/13.0.2150.3": {
+        "type": "package",
+        "compile": {
+          "lib/Microsoft.AnalysisServices.Core.DLL": {},
+          "lib/Microsoft.AnalysisServices.Tabular.DLL": {}
+        },
+        "runtime": {
+          "lib/Microsoft.AnalysisServices.Core.DLL": {},
+          "lib/Microsoft.AnalysisServices.Tabular.DLL": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
@@ -413,7 +424,7 @@
           "lib/net45/Microsoft.IdentityModel.Clients.ActiveDirectory.dll": {}
         }
       },
-      "Microsoft.NET.Sdk.Functions/1.0.29": {
+      "Microsoft.NET.Sdk.Functions/1.0.24": {
         "type": "package",
         "dependencies": {
           "Microsoft.Azure.WebJobs": "[2.2.0, 2.4.0)",
@@ -1236,6 +1247,20 @@
     }
   },
   "libraries": {
+    "Microsoft.AnalysisServices.Tabular/13.0.2150.3": {
+      "sha512": "nwqCaPGJyc/l3KmJnApiQxkxfAOko2kuF0lmfNpPdWpbQ/MZHJeqibGMdr6quot6/e5AsLbgukWxtbkBxBQ7LA==",
+      "type": "package",
+      "path": "microsoft.analysisservices.tabular/13.0.2150.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/Microsoft.AnalysisServices.Core.DLL",
+        "lib/Microsoft.AnalysisServices.Tabular.DLL",
+        "lib/Microsoft.AnalysisServices.Tabular.Json.DLL",
+        "microsoft.analysisservices.tabular.13.0.2150.3.nupkg.sha512",
+        "microsoft.analysisservices.tabular.nuspec"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "type": "package",
@@ -1702,10 +1727,10 @@
         "microsoft.identitymodel.clients.activedirectory.nuspec"
       ]
     },
-    "Microsoft.NET.Sdk.Functions/1.0.29": {
-      "sha512": "xqKWZ83kDHDOX1H6fHJy/BmZhapFXQYp2IgxjaNAbEm26UUeq19kVJzurzZn9/goY/DKMRMiPmiZkEqd9gr+yg==",
+    "Microsoft.NET.Sdk.Functions/1.0.24": {
+      "sha512": "iYNhz5v331rTIL7OBLAulCPpxNvTdw2u5QObK18YpWnjsHovrCWu8YQumXc1p9EqeOkw5hXqHgV97mUZOZ3wHA==",
       "type": "package",
-      "path": "microsoft.net.sdk.functions/1.0.29",
+      "path": "microsoft.net.sdk.functions/1.0.24",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1718,10 +1743,9 @@
         "build/netstandard1.0/Microsoft.NET.Sdk.Functions.Publish.ZipDeploy.targets",
         "build/netstandard1.0/Microsoft.NET.Sdk.Functions.Publish.props",
         "build/netstandard1.0/Microsoft.NET.Sdk.Functions.Publish.targets",
-        "build/netstandard1.0/Microsoft.NET.Sdk.Functions.Version.props",
         "build/netstandard1.0/Microsoft.NET.Sdk.Functions.props",
         "build/netstandard1.0/Microsoft.NET.Sdk.Functions.targets",
-        "microsoft.net.sdk.functions.1.0.29.nupkg.sha512",
+        "microsoft.net.sdk.functions.1.0.24.nupkg.sha512",
         "microsoft.net.sdk.functions.nuspec",
         "tools/net46/Microsoft.NET.Sdk.Functions.Generator.exe",
         "tools/net46/Microsoft.NET.Sdk.Functions.MSBuild.dll",
@@ -4644,6 +4668,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.6.1": [
+      "Microsoft.AnalysisServices.Tabular >= 13.0.2150.3",
       "Microsoft.Azure.KeyVault >= 3.0.4",
       "Microsoft.Azure.Services.AppAuthentication >= 1.3.1",
       "Microsoft.Extensions.Configuration >= 2.2.0",
@@ -4653,7 +4678,7 @@
       "Microsoft.Extensions.Configuration.Json >= 2.2.0",
       "Microsoft.Extensions.Configuration.UserSecrets >= 2.2.0",
       "Microsoft.IdentityModel.Clients.ActiveDirectory >= 5.2.1",
-      "Microsoft.NET.Sdk.Functions >= 1.0.29",
+      "Microsoft.NET.Sdk.Functions >= 1.0.24",
       "Newtonsoft.Json >= 12.0.2"
     ]
   },
@@ -4698,6 +4723,10 @@
     "frameworks": {
       "net461": {
         "dependencies": {
+          "Microsoft.AnalysisServices.Tabular": {
+            "target": "Package",
+            "version": "[13.0.2150.3, )"
+          },
           "Microsoft.Azure.KeyVault": {
             "target": "Package",
             "version": "[3.0.4, )"
@@ -4736,7 +4765,7 @@
           },
           "Microsoft.NET.Sdk.Functions": {
             "target": "Package",
-            "version": "[1.0.29, )"
+            "version": "[1.0.24, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
@@ -4751,7 +4780,7 @@
       "code": "NU1608",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Detected package version outside of dependency constraint: Microsoft.NET.Sdk.Functions 1.0.29 requires Newtonsoft.Json (= 9.0.1) but version Newtonsoft.Json 12.0.2 was resolved.",
+      "message": "Detected package version outside of dependency constraint: Microsoft.NET.Sdk.Functions 1.0.24 requires Newtonsoft.Json (= 9.0.1) but version Newtonsoft.Json 12.0.2 was resolved.",
       "libraryId": "Newtonsoft.Json",
       "targetGraphs": [
         ".NETFramework,Version=v4.6.1"

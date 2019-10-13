@@ -58,7 +58,7 @@ namespace CANDELABIAF
                 ProcessName = "NULL";
             }
 
-            var str = "Server = tcp:sc-az-datacontrol-srv1.database.windows.net,1433; Initial Catalog = CandelaKPI-DEV; Persist Security Info = False; User ID = YTCADMIN; Password =YTCP@ssword; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
+            var str = "Server = tcp:sc-az-datacontrol-srv1.database.windows.net,1433; Initial Catalog = CandelaKPI-DEV; Persist Security Info = False; User ID = Dev; Password =fba4bUyzBV7QvXEq; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
             try
             {
 
@@ -71,11 +71,12 @@ namespace CANDELABIAF
                     //    return req.CreateResponse(HttpStatusCode.BadRequest, "Request does not contain a valid Secret.");
 
 
-
+                    /* Commented for time being
                     AzureServiceTokenProvider serviceTokenProvider = new AzureServiceTokenProvider();
 
                     var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(serviceTokenProvider.KeyVaultTokenCallback));
                     //var secretUri = SecretUri(secretRequest.Secret);
+
                     string secretUri = "https://CandelaBIKV.vault.azure.net/Secrets/VamshiEmailAccount";
                     SecretBundle secretValue;
                     try
@@ -90,17 +91,17 @@ namespace CANDELABIAF
                         //log.Error($"Function-({_invocationId}): Error in getting the Secret value from KeyVault for the secret: VisionBIServiceAccount ", kex);
                         return req.CreateResponse(HttpStatusCode.ExpectationFailed, $"{kex}");
                     }
+                    */
 
-
-                    string fromEmail = "vamshi.krishna@candelamedical.com";// "vamshi @snp.com";
+                    string fromEmail = "vamshi@snp.com";//"vamshi.krishna@candelamedical.com";// "vamshi @snp.com";
                     //string fromEmail =  "vamshi@snp.com";
                     string toEmail = "data@candelamedical.com";
                     int smtpPort = 587;
                     bool smtpEnableSsl = true;
                     string smtpHost = "smtp.office365.com"; // your smtp host
-                    string smtpUser = "vamshi.krishna@candelamedical.com";// "Vamshi @snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
+                    string smtpUser = "vamshi@snp.com";//"vamshi.krishna@candelamedical.com";// "Vamshi @snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
                     //string smtpUser =  "Vamshi@snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
-                    string smtpPass = secretValue.Value;// ""; // your smtp password
+                    string smtpPass = "M@hathi5";//secretValue.Value;// ""; // your smtp password
                     //string smtpPass =  ""; // your smtp password
                     string subject = "DataLoad Process";
                     string message = "";
@@ -122,7 +123,7 @@ namespace CANDELABIAF
 
                     Logger("Generating Email Body is started", "INFO", null, ProcessName, RunId, conn);
 
-                    string sql = "SELECT [ProcessName],[Summary],[Status],[ErrorInfo],[LoggedTime],[RecordsInSource],[RecordsCopiedToDest],[SkippedRecordsToMove],[CopyDuration(Seconds)] as Duration,LogsPath FROM ProcessLogs where RunId = '" + RunId + "' Order by ID";
+                    string sql = "SELECT [ProcessName],[Summary],[Status],[ErrorInfo],[LoggedTime],[RecordsInSource],[RecordsCopiedToDest],[SkippedRecordsToMove],[CopyDuration(Seconds)] as Duration,LogsPath FROM BI.LG_ProcessLogs where RunId = '" + RunId + "' Order by ID";
 
                     subject = "Data Load is completed and below are the details - " + RunId;
 
@@ -205,7 +206,7 @@ namespace CANDELABIAF
             else
                 _logger.Error($"Function-({_invocationId}): {Summary} with Error: {ErrorInfo} , For ADF Rund Id - {RunId}");
 
-            string Query = "Insert Into ProcessLogs(ProcessName,Summary,Status,ErrorInfo,RunId) values('" + ProcessName + "','" + Summary + "','" + Status + "','" + ErrorInfo + "','" + RunId + "')";
+            string Query = "Insert Into BI.LG_ProcessLogs(ProcessName,Summary,Status,ErrorInfo,RunId) values('" + ProcessName + "','" + Summary + "','" + Status + "','" + ErrorInfo + "','" + RunId + "')";
             PutData(Query, conn);
         }
         private static void PutData(string SqlQuery, SqlConnection conn)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
-//using Microsoft.AnalysisServices.Tabular;
+using Microsoft.AnalysisServices.Tabular;
 using System.Configuration;
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace CANDELABIAF
         public static HttpResponseMessage Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequestMessage req, Microsoft.Azure.WebJobs.ExecutionContext exCtx, TraceWriter log)
         {
             _logger = log;
-            _logger.Info($"Function-({_invocationId}): Triggered a Function which process Tabular Model");
+            _logger.Info($"Function-({exCtx.InvocationId}): Triggered a Function which process Tabular Model");
 
             // parse query parameter
             string modelname = req.GetQueryNameValuePairs()
@@ -76,13 +76,16 @@ namespace CANDELABIAF
                 var str = "Server = tcp:sc-az-datacontrol-srv1.database.windows.net,1433; Initial Catalog = CandelaKPI-Dev; Persist Security Info = False; User ID = Dev; Password =fba4bUyzBV7QvXEq; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
                 SqlConnection conn = new SqlConnection(str);
                 conn.Open();
+                _logger.Info($"Connection opened to DB");
                 Item output = new Item();
                 if (modelname != null)
                 {
                     try
                     {
-
+                        _logger.Info($"Triggered the model refresh");
                         output = CallRefreshAsync(modelname).Result;
+                        _logger.Info($"called the model refresh with Output: {output}");
+                        
                         Logger(modelname + " - Data Model is refreshed", "INFO", null, ProcessName, RunId, conn);
 
                     }
@@ -138,7 +141,7 @@ namespace CANDELABIAF
 
 
             HttpResponseMessage response = await client.PostAsJsonAsync("refreshes", refreshRequest);
-
+            _logger.Info($"Triggered the model refresh inside call refreshasync");
 
             response.EnsureSuccessStatusCode();
 
@@ -242,8 +245,8 @@ namespace CANDELABIAF
             else
                 _logger.Error($"Function-({_invocationId}): {Summary}, For ADF Rund Id - {RunId}");
 
-            //string Query = "Insert Into ProcessLogs(ProcessName,Summary,Status,ErrorInfo,RunId) values('" + ProcessName + "','" + Summary + "','" + Status + "','" + ErrorInfo + "','" + RunId + "')";
-            //PutData(Query, conn);
+            string Query = "Insert Into BI.LG_ProcessLogs(ProcessName,Summary,Status,ErrorInfo,RunId) values('" + ProcessName + "','" + Summary + "','" + Status + "','" + ErrorInfo + "','" + RunId + "')";
+            PutData(Query, conn);
         }
         private static void PutData(string SqlQuery, SqlConnection conn)
         {
