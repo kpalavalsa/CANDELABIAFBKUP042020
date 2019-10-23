@@ -78,13 +78,15 @@ namespace CANDELABIAF
                 conn.Open();
                 _logger.Info($"Connection opened to DB");
                 Item output = new Item();
+                string output1="";
                 if (modelname != null)
                 {
                     try
                     {
                         _logger.Info($"Triggered the model refresh");
                         output = CallRefreshAsync(modelname).Result;
-                        _logger.Info($"called the model refresh with Output: {output}");
+                        output1 = JsonConvert.SerializeObject(output);
+                        _logger.Info($"called the model refresh with Output: {output1}");
                         
                         Logger(modelname + " - Data Model is refreshed", "INFO", null, ProcessName, RunId, conn);
 
@@ -96,9 +98,9 @@ namespace CANDELABIAF
                     }
                 }
                 if (output.status == "succeeded")
-                    return req.CreateResponse(HttpStatusCode.OK, output);
+                    return req.CreateResponse(HttpStatusCode.OK);
                 else
-                    return req.CreateResponse(HttpStatusCode.ExpectationFailed, output);
+                    return req.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
             catch (Exception ex)
             {
