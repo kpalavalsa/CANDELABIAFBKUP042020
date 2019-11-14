@@ -3,7 +3,8 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
-    "ClientId": "TestClientId"
+    "ClientId": "TestClientId",
+    "SQLConnection": "Server = tcp:sc-az-datacontrol-srv1.database.windows.net,1433; Initial Catalog = CandelaKPI-Dev; Persist Security Info = False; User ID = Dev; Password =fba4bUyzBV7QvXEq; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;"
   },
   "ConnectionStrings": {
     "SqlConnectionString": "server=jongdb;user=jong;"

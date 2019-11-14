@@ -28,7 +28,7 @@ namespace CANDELABIAF
         {
             _logger = log;
             _logger.Info($"Function-({_invocationId}): Triggered a Function which processess email");
-
+            //string superSecret = System.Environment.GetEnvironmentVariable("SuperSecret");
 
             // parse query parameter
             string RunId = req.GetQueryNameValuePairs()
@@ -71,17 +71,21 @@ namespace CANDELABIAF
                     //    return req.CreateResponse(HttpStatusCode.BadRequest, "Request does not contain a valid Secret.");
 
 
-                    /* Commented for time being
+                    // Commented for time being
                     AzureServiceTokenProvider serviceTokenProvider = new AzureServiceTokenProvider();
 
                     var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(serviceTokenProvider.KeyVaultTokenCallback));
                     //var secretUri = SecretUri(secretRequest.Secret);
 
-                    string secretUri = "https://CandelaBIKV.vault.azure.net/Secrets/VamshiEmailAccount";
-                    SecretBundle secretValue;
+                    
+                    SecretBundle emailAccount;
+                    SecretBundle emailPassword;
                     try
                     {
-                        secretValue = await keyVaultClient.GetSecretAsync(secretUri).ConfigureAwait(false);
+                        string secretUri = "https://CandelaBIKV.vault.azure.net/Secrets/EmailAccount";
+                        emailAccount = await keyVaultClient.GetSecretAsync(secretUri).ConfigureAwait(false);
+                        secretUri = "https://CandelaBIKV.vault.azure.net/Secrets/EmailPassword";
+                        emailPassword = await keyVaultClient.GetSecretAsync(secretUri).ConfigureAwait(false);
                         //log.Info($"Function-({_invocationId}): Success in fetching the secret value from KeyVault ");
                         Logger("Success in fetching the secret value from KeyVault", "INFO", null, ProcessName, RunId, conn);
                     }
@@ -91,17 +95,17 @@ namespace CANDELABIAF
                         //log.Error($"Function-({_invocationId}): Error in getting the Secret value from KeyVault for the secret: VisionBIServiceAccount ", kex);
                         return req.CreateResponse(HttpStatusCode.ExpectationFailed, $"{kex}");
                     }
-                    */
+                    
 
-                    string fromEmail = "vamshi@snp.com";//"vamshi.krishna@candelamedical.com";// "vamshi @snp.com";
+                    string fromEmail = emailAccount.Value;//"vamshi.krishna@candelamedical.com";// "vamshi @snp.com";
                     //string fromEmail =  "vamshi@snp.com";
                     string toEmail = "data@candelamedical.com";
                     int smtpPort = 587;
                     bool smtpEnableSsl = true;
                     string smtpHost = "smtp.office365.com"; // your smtp host
-                    string smtpUser = "vamshi@snp.com";//"vamshi.krishna@candelamedical.com";// "Vamshi @snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
+                    string smtpUser = emailAccount.Value;//"vamshi.krishna@candelamedical.com";// "Vamshi @snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
                     //string smtpUser =  "Vamshi@snp.com"; // your smtp user Configuration["Values:SMTPUser"]; //
-                    string smtpPass = "M@hathi5";//secretValue.Value;// ""; // your smtp password
+                    string smtpPass = emailPassword.Value;// ""; // your smtp password
                     //string smtpPass =  ""; // your smtp password
                     string subject = "DataLoad Process";
                     string message = "";

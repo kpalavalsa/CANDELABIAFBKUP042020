@@ -29,7 +29,8 @@ namespace CANDELABIAF
         {
             _logger = log;
             _logger.Info($"Function-({exCtx.InvocationId}): Triggered a Function which process Tabular Model");
-
+            string superSecret = System.Environment.GetEnvironmentVariable("SuperSecret");
+            _logger.Info($"Connection opened to DB : {superSecret}");
             // parse query parameter
             string modelname = req.GetQueryNameValuePairs()
                 .FirstOrDefault(q => string.Compare(q.Key, "modelname", true) == 0)
@@ -73,6 +74,7 @@ namespace CANDELABIAF
             }
             try
             {
+
                 var str = "Server = tcp:sc-az-datacontrol-srv1.database.windows.net,1433; Initial Catalog = CandelaKPI-Dev; Persist Security Info = False; User ID = Dev; Password =fba4bUyzBV7QvXEq; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;";
                 SqlConnection conn = new SqlConnection(str);
                 conn.Open();
