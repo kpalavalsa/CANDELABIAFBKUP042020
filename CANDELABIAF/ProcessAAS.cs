@@ -81,26 +81,41 @@ namespace CANDELABIAF
                 _logger.Info($"Connection opened to DB");
                 Item output = new Item();
                 string output1="";
+                int retrycount = 0;
                 if (modelname != null)
                 {
-                    try
+                    do
                     {
-                        _logger.Info($"Triggered the model refresh");
-                        output = CallRefreshAsync(modelname).Result;
-                        output1 = JsonConvert.SerializeObject(output);
-                        _logger.Info($"called the model refresh with Output: {output1}");
-                        
-                        Logger(modelname + " - Data Model is refreshed", "INFO", null, ProcessName, RunId, conn);
+                        try
+                        {
+                            retrycount++;
+                            _logger.Info($"Triggered the model refresh");
+                            output = CallRefreshAsync(modelname).Result;
+                            output1 = JsonConvert.SerializeObject(output);
+                            _logger.Info($"called the model refresh with Output: {output1}");
 
-                    }
-                    catch (Exception e)
-                    {
-                        Logger(modelname + " - Data Model refresh is Failed", "ERROR", e.Message.Replace("'", ""), ProcessName, RunId, conn);
-                        return req.CreateResponse(HttpStatusCode.ExpectationFailed, e);
-                    }
+                            Logger(modelname + " - Data Model is refreshed", "INFO", null, ProcessName, RunId, conn);
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            if (retrycount == 3)
+                            {
+                                Logger(modelname + " - Data Model refresh is Failed", "ERROR", e.Message.Replace("'", ""), ProcessName, RunId, conn);
+                                return req.CreateResponse(HttpStatusCode.ExpectationFailed, e);
+                            }
+                            else
+                            {
+                                Logger(modelname + " - Data Model refresh is Failed at retry attempt-"+retrycount.ToString(), "WARNING", e.Message.Replace("'", ""), ProcessName, RunId, conn);
+                                
+                                Thread.Sleep(60000);
+                            }
+                        }
+                    } while (true);
                 }
                 if (output.status == "succeeded")
                     return req.CreateResponse(HttpStatusCode.OK);
+                
                 else
                     return req.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
@@ -247,7 +262,7 @@ namespace CANDELABIAF
             if (ErrorInfo is null)
                 _logger.Info($"Function-({_invocationId}): {Summary}, For ADF Rund Id - {RunId}");
             else
-                _logger.Error($"Function-({_invocationId}): {Summary}, For ADF Rund Id - {RunId}");
+                _logger.Error($"Function-({_invocationId}): {Summary}, For ADF Rund Id - {RunId}, With Error - {ErrorInfo}");
 
             string Query = "Insert Into BI.LG_ProcessLogs(ProcessName,Summary,Status,ErrorInfo,RunId) values('" + ProcessName + "','" + Summary + "','" + Status + "','" + ErrorInfo + "','" + RunId + "')";
             PutData(Query, conn);
